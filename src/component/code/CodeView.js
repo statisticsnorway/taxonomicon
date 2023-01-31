@@ -36,7 +36,7 @@ const CodeView = () => {
                     }
                     } style={{"flex" : "1", "margin" : "10px"}} renderInput={(params) => <TextField {...params} label="Coicop" />} options={coicopOptions} />
                     <button onClick={() => giveCode({id: text.id, confirmedCode: selectedCode})} style={{"margin" : "10px"}}>Tilegn kode</button>
-                    <button style={{"flex" : "1", "margin" : "10px"}}>Kan ikke kode</button>
+                    <button onClick={() => giveCode({id: text.id, confirmedCode: "NO_CODE"})} style={{"flex" : "1", "margin" : "10px"}}>Kan ikke kode</button>
                 </div>
             })}
         </div>

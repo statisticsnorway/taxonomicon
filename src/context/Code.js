@@ -18,6 +18,13 @@ const CodeProvider = ({children}) => {
             setTexts(texts.filter(listText => listText.id !== text.id))
         })
     }
+    const giveCodeBulk = (code) => {
+        axios.put('http://localhost:8081/v1/encoding/confirm/bulk', {confirmedCode : code, ids: selectedTexts.map(text => text.id)}).then(res => {
+            const tempSelected = selectedTexts.map(tempText => tempText.id)
+            setSelectedTexts([])
+            setTexts(texts.filter(text => !tempSelected.includes(text.id)))
+        })
+    }
     const addTextToSelected = (text) => {
         setSelectedTexts([...selectedTexts, text])
     }
@@ -35,7 +42,7 @@ const CodeProvider = ({children}) => {
         console.log("SELECTED TEXTS", selectedTexts)
     }, [selectedTexts])
     return (
-        <CodeContext.Provider value={{texts, giveCode, addTextToSelected, removeTextFromSelected}}>
+        <CodeContext.Provider value={{texts, giveCode, addTextToSelected, removeTextFromSelected, giveCodeBulk}}>
             {children}
         </CodeContext.Provider>
     )
