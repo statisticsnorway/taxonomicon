@@ -3,14 +3,11 @@ import axios from "axios";
 import testData from "../data/omit/item.json"
 import {ENCODING_URL} from "../constant/api";
 
-
-
 export const CodeContext = createContext()
 
 const CodeProvider = ({children}) => {
     const [texts, setTexts] = useState([])
     const [selectedTexts, setSelectedTexts] = useState([])
-
     const giveCode = (text) => {
         axios.put(`${ENCODING_URL}/${text.id}`, {confirmedCode: text.confirmedCode}).then(res => {
             setTexts(texts.filter(listText => listText.id !== text.id))

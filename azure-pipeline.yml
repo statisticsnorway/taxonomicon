@@ -1,0 +1,47 @@
+name: $(Build.SourceBranch)-$(date:yyyyMMdd)$(rev:.r)
+# Pipeline triggers on any branch and tag
+trigger:
+  branches:
+    include:
+      - "main"
+  tags:
+    include:
+      - "*"
+# Pipeline will be run on this base image
+pool:
+  vmImage: "ubuntu-latest"
+
+variables:
+  # Variables defined in Pipelines->Library->Variable Groups in your project in
+  # Azure Pipelines
+  - group: Hemmeligheter
+  # Variables defined here
+  - name: fullSha
+    value: "$(Build.SourceVersion)"
+  - name: imageName
+    value: "eu.gcr.io/prod-bip/ssb/forbruk/taxonomicon"
+  - name: repoName
+    value: "prod-bip/ssb/forbruk/taxonomicon"
+
+resources:
+  repositories:
+    # prebuilt pipeline templates
+    - repository: templates
+      type: github
+      name: statisticsnorway/azure-pipelines-templates
+      ref: refs/tags/1.1.35
+      endpoint: github-Forbruksundersøkelsen
+
+jobs:
+  - job: builDockerImage
+    dependsOn: Test
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['Build.SourceBranch'], 'refs/heads/develop'), eq(variables['Build.SourceBranch'], 'refs/heads/qa')))
+    displayName: "Build and push Docker image"
+    # Steps in this Job
+    steps:
+      - script: |
+          echo "build docker image"
+      - template: "docker/docker-build-image-and-push-to-gcr.yml@templates"
+        parameters:
+          imageName: $(imageName)
+          repoName: $(repoName)
