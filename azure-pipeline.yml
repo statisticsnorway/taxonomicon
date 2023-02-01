@@ -34,7 +34,6 @@ resources:
 
 jobs:
   - job: builDockerImage
-    dependsOn: Test
     condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['Build.SourceBranch'], 'refs/heads/develop'), eq(variables['Build.SourceBranch'], 'refs/heads/qa')))
     displayName: "Build and push Docker image"
     # Steps in this Job
