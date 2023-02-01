@@ -34,7 +34,7 @@ resources:
 
 jobs:
   - job: builDockerImage
-    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['Build.SourceBranch'], 'refs/heads/develop'), eq(variables['Build.SourceBranch'], 'refs/heads/qa')))
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main')))
     displayName: "Build and push Docker image"
     # Steps in this Job
     steps:
