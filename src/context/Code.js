@@ -1,6 +1,5 @@
 import {createContext, useEffect, useState} from "react";
 import axios from "axios";
-import testData from "../data/omit/item.json"
 import {ENCODING_URL} from "../constant/api";
 
 export const CodeContext = createContext()
@@ -29,8 +28,6 @@ const CodeProvider = ({children}) => {
     useEffect(() => {
         axios.get(`${ENCODING_URL}`).then(res => {
             setTexts(res.data)
-        }).catch(er => {
-            setTexts(testData)
         })
     }, [])
 
