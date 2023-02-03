@@ -9,7 +9,7 @@ COPY . /app/
 
 RUN npx next telemetry disable
 
-RUN yarn run buildenv:dev
+RUN yarn run build:local
 
 EXPOSE 3000
 
@@ -17,4 +17,4 @@ ENV NODE_OPTIONS "--max-http-header-size=16834"
 ENV NODE_ENV "production"
 ENV PORT 3000
 
-CMD [ "yarn", "start" ]
+CMD [ "node", "server.js" ]

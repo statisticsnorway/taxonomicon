@@ -16,8 +16,9 @@ EXPOSE 9080
 # with auth headers, header size is considerably increased
 # testing if this will fix the problem with BIP
 # TODO: consider multi-container pod config (sidecar)
+ENV REACT_APP_ENV "prod"
 ENV NODE_OPTIONS "--max-http-header-size=16834"
 ENV NODE_ENV "production"
 ENV PORT 9080
 
-CMD [ "yarn", "start" ]
+CMD [ "node", "server.js" ]
