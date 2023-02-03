@@ -5,7 +5,6 @@ import Bulk from "./component/code/Bulk";
 
 
 function App() {
-
   return (
     <div className="App">
       <CodeProvider>

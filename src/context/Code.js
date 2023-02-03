@@ -1,9 +1,8 @@
 import {createContext, useEffect, useState} from "react";
 import axios from "axios";
 import {ENCODING_URL} from "../constant/api";
-import {bearerTokenTest} from "../data/omit/token";
 
-if (process.env.REACT_APP_ENV === 'local') axios.defaults.headers.common['Authorization'] = bearerTokenTest
+if (process.env.REACT_APP_ENV === 'local') axios.defaults.headers.common['Authorization'] = process.env.REACT_APP_BEARER_TEST
 export const CodeContext = createContext()
 
 const CodeProvider = ({children}) => {
