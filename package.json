@@ -21,7 +21,6 @@
     "start": "sh -ac '. .env.dev; react-scripts start'",
     "build": "GENERATE_SOURCEMAP=false REACT_APP_ENV=${REACT_APP_ENV} react-scripts build",
     "build:local": "sh -ac '. .env.dev; GENERATE_SOURCEMAP=false react-scripts build'",
-    "build:staging" : "REACT_APP_ENV=dev yarn run build",
     "build:prod" : "REACT_APP_ENV=prod yarn run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

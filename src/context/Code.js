@@ -21,7 +21,7 @@ const CodeProvider = ({children}) => {
         })
     }
     const giveCodeBulk = (code) => {
-        axios.put(`${ENCODING_URL}/confirm/bulk`, {confirmedCode : code, ids: selectedTexts.map(text => text.id)}).then(res => {
+        axios.put(`${ENCODING_URL}/confirm-bulk`, {confirmedCode : code, ids: selectedTexts.map(text => text.id)}).then(res => {
             const tempSelected = selectedTexts.map(tempText => tempText.id)
             setSelectedTexts([])
             setTexts(texts.filter(text => !tempSelected.includes(text.id)))

@@ -19,6 +19,9 @@ A text to be coded preferably comes in this format:
 ```
 
 To run locally, add .env.local file with a test bearer token
+```
+REACT_APP_BEARER_TEST='Bearer <sometesttoken>
+```
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -48,9 +51,9 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.\
 
-### `yarn buildenv:dev`
+### `yarn build:local`
 
-Same as above, but builds with `.env.dev` environment
+Same as above, but builds with `.env.dev` and `.env.local` environment
 
 ### `yarn eject`
 
