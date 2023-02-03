@@ -8,9 +8,15 @@ export const CodeContext = createContext()
 const CodeProvider = ({children}) => {
     const [texts, setTexts] = useState([])
     const [selectedTexts, setSelectedTexts] = useState([])
+
+    const reserveTexts = () => {
+        return axios.post(`${ENCODING_URL}/reserve`, {size: 50})
+    }
+    const getTexts = () => axios.get(`${ENCODING_URL}/not-confirmed`)
+
     const giveCode = (text) => {
 
-        axios.put(`${ENCODING_URL}/${text.id}`, {confirmedCode: text.confirmedCode}).then(res => {
+        axios.put(`${ENCODING_URL}/confirm/${text.id}`, {confirmedCode: text.confirmedCode}).then(res => {
             setTexts(texts.filter(listText => listText.id !== text.id))
         })
     }
@@ -28,11 +34,22 @@ const CodeProvider = ({children}) => {
         setSelectedTexts(selectedTexts.filter(listText => listText.id !== text.id))
     }
     useEffect(() => {
+        const getReservedTextsForCoding = async () => {
+            const texts = await getTexts()
+            if(texts.data.length === 0) {
+                const reserveResult = await reserveTexts()
+                if(reserveResult.status === 200) {
+                    const newTexts = await getTexts()
+                    setTexts(newTexts.data)
+                }
+            }
+            else{
+                setTexts(texts.data)
+            }
+        }
+        if(texts.length === 0) getReservedTextsForCoding().then()
 
-        axios.get(`${ENCODING_URL}/not-confirmed`).then(res => {
-            setTexts(res.data)
-        })
-    }, [])
+    }, [texts])
 
     return (
         <CodeContext.Provider value={{texts, giveCode, addTextToSelected, removeTextFromSelected, giveCodeBulk}}>

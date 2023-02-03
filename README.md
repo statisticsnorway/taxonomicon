@@ -1,5 +1,6 @@
 # Taxonomicon
 
+
 A front-end application made for manually coding texts to a certain category. \
 A text to be coded preferably comes in this format:
 ```
@@ -17,6 +18,7 @@ A text to be coded preferably comes in this format:
   }
 ```
 
+To run locally, add .env.local file with a test bearer token
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
