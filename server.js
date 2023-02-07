@@ -14,6 +14,7 @@ app.engine('html', require('ejs').renderFile);
 
 app.use('/static',express.static(__dirname + "/build/static"))
 app.use('/assets',express.static(__dirname + "/build/assets"))
+app.use('/be',express.static(__dirname + "/be"))
 app.use((req, res) => {
     res.render('index.html',{ BASE_URL});
 });
