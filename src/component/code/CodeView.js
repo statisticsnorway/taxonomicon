@@ -2,6 +2,7 @@ import {useContext} from "react";
 import {CodeContext} from "../../context/Code";
 import {coicopOptions} from "../../data/coicop";
 import {Autocomplete, TextField} from "@mui/material";
+import TextContext from "./TextContext";
 
 
 const CodeView = () => {
@@ -21,7 +22,7 @@ const CodeView = () => {
                         }
                     }
                     } style={{"flex" : "1", "margin": "10px"}} type={'checkbox'}/>
-                    <div style={{ "display" : "flex","flex" : "4", "alignItems" : "center"}}>{"hail mary!"}</div>
+                    <div style={{ "display" : "flex","flex" : "4", "alignItems" : "center"}}><TextContext textContext={text.context} /></div>
                     <input style={{"flex" : "1", "margin" : "10px"}} disabled value={text.text} />
                     <div style={{"display" : "flex", "justifyContent" : "left", "flex" : "1", "margin" : "10px"}}>{text.predictions.map(prediction => {
                         const prob = Number(prediction.probability)
