@@ -1,15 +1,16 @@
 import './App.css';
+import './style/code.css'
 import CodeProvider from "./context/Code";
 import CodeView from "./component/code/CodeView";
-import Bulk from "./component/code/Bulk";
+import CodeBulk from "./component/code/CodeBulk";
 
 
 function App() {
   return (
     <div className="App">
       <CodeProvider>
-          <Bulk/>
-        <CodeView/>
+          <CodeBulk/>
+          <CodeView/>
       </CodeProvider>
     </div>
   );
