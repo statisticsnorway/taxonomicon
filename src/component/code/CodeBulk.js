@@ -1,7 +1,11 @@
-import {Autocomplete, TextField} from "@mui/material";
+import {Autocomplete, createFilterOptions, TextField} from "@mui/material";
 import {coicopOptions} from "../../data/coicop";
 import {useContext, useState} from "react";
 import {CodeContext} from "../../context/Code";
+
+const filterOptions = createFilterOptions({
+    stringify: ({ searchterms }) => searchterms.join(' ')
+});
 
 const CodeBulk = () => {
     const [code, setCode] = useState(null)
@@ -20,7 +24,14 @@ const CodeBulk = () => {
             </div>
             <div className={'code-bulk-bulk-container'}>
                 <div className={'code-bulk-categories'}>
-                    <Autocomplete onChange={(event, val) => setCode(val)}  renderInput={(params) => <TextField {...params} label="Coicop" />} options={coicopOptions} />
+                    <Autocomplete onChange={(event, val) => setCode(val.code)}
+                                  renderInput={(params) => <TextField {...params} label="Coicop" />}
+                                  options={coicopOptions}
+                                  filterOptions={filterOptions}
+                                  getOptionLabel={({code, description}) => {
+                                      return `${code} - ${description}`;
+                                  }}
+                    />
                 </div>
                 <div className={'code-bulk-assign'}>
                     <button onClick={() => {if(code) giveCodeBulk(code)}}

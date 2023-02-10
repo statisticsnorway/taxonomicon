@@ -1,9 +1,12 @@
 import CodeLineContext from "./CodeLineContext";
-import {Autocomplete, TextField} from "@mui/material";
+import {Autocomplete, TextField, createFilterOptions} from "@mui/material";
 import {coicopOptions} from "../../data/coicop";
 import {useContext, useState} from "react";
 import {CodeContext} from "../../context/Code";
 
+const filterOptions = createFilterOptions({
+    stringify: ({ searchterms }) => searchterms.join(' ')
+});
 
 const CodeLine = ({ text}) => {
     const {giveCode, addTextToSelected, removeTextFromSelected} = useContext(CodeContext)
@@ -51,9 +54,13 @@ const CodeLine = ({ text}) => {
                 })}
             </div>
             <div className={'codeline-categories-container'}>
-                <Autocomplete onChange={(change, val) => {setSelectedCode(val)}}
+                <Autocomplete onChange={(change, val) => {setSelectedCode(val.code)}}
                           renderInput={(params) => <TextField {...params} label="Coicop" />}
                           options={coicopOptions}
+                          filterOptions={filterOptions}
+                          getOptionLabel={({code, description}) => {
+                              return `${code} - ${description}`;
+                          }}
                 />
             </div>
             <div className={'codeline-assign-container'}>
