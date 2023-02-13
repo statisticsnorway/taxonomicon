@@ -47,7 +47,7 @@
     flex: 1;
 }
 .codeline-check {
-    transform: scale(2);
+    transform: scale(2.5);
 }
 .codeline-header-container {
     display: flex;

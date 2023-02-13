@@ -511,6 +511,12 @@ const coicopList = [
 {code: "13.9.0.9", description: "Andre tjenester ikke ellers nevnt (S)"}]
 
 const coicopOptions = coicopList.map(coicop => {
-    return {code: coicop.code.trim(), description: coicop.description, searchterms: [coicop.code.trim(), coicop.description.toLowerCase()]}
+    let trim = coicop.code.trim()
+    if(trim[0] === '0') {
+        trim = trim.substring(1)
+    }
+    trim = trim.replaceAll('.', '')
+
+    return {id: coicop.code, code: coicop.code.trim(), trimCode: trim, description: coicop.description, searchterms: [coicop.code.trim(), coicop.code.trim().replaceAll('.', ''), coicop.description.toLowerCase()]}
 })
 exports.coicopOptions = coicopOptions

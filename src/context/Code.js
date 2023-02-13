@@ -1,4 +1,4 @@
-import {createContext, useState} from "react";
+import {createContext, useEffect, useState} from "react";
 import axios from "axios";
 import {ENCODING_URL} from "../constant/api";
 
@@ -10,9 +10,9 @@ const CodeProvider = ({children}) => {
     const [selectedTexts, setSelectedTexts] = useState([])
 
     const reserveTexts = () => {
-        return axios.post(`${ENCODING_URL}/reserve`, {size: 50})
+        return axios.post(`${ENCODING_URL}/reserve`, {size: 100})
     }
-    const getTexts = () => axios.get(`${ENCODING_URL}/not-confirmed`)
+    const getTexts = () => axios.get(`${ENCODING_URL}/not-confirmed?limit=20`)
 
     const getReservedTextsForCoding = async () => {
         const texts = await getTexts()
@@ -35,8 +35,8 @@ const CodeProvider = ({children}) => {
         }
     }
     const giveCodeBulk = (code) => {
-        axios.put(`${ENCODING_URL}/confirm-bulk`, {confirmedCode : code, ids: selectedTexts.map(text => text.id)}).then(res => {
-            const tempSelected = selectedTexts.map(tempText => tempText.id)
+        axios.put(`${ENCODING_URL}/confirm-bulk`, {confirmedCode : code, ids: selectedTexts}).then(res => {
+            const tempSelected = selectedTexts.map(text => text)
             setSelectedTexts([])
             setTexts(texts.filter(text => !tempSelected.includes(text.id)))
         })
@@ -45,11 +45,12 @@ const CodeProvider = ({children}) => {
         setSelectedTexts([...selectedTexts, text])
     }
     const removeTextFromSelected = (text) => {
-        setSelectedTexts(selectedTexts.filter(listText => listText.id !== text.id))
+        setSelectedTexts(selectedTexts.filter(listText => listText !== text))
     }
-
+    useEffect(() => {
+    }, [selectedTexts])
     return (
-        <CodeContext.Provider value={{texts, giveCode, addTextToSelected, removeTextFromSelected, giveCodeBulk, getReservedTextsForCoding}}>
+        <CodeContext.Provider value={{texts, giveCode, addTextToSelected, removeTextFromSelected, giveCodeBulk, getReservedTextsForCoding, setSelectedTexts}}>
             {children}
         </CodeContext.Provider>
     )

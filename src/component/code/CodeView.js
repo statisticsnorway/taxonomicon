@@ -1,10 +1,36 @@
-import {useContext} from "react";
+import {useContext, useEffect, useState} from "react";
 import {CodeContext} from "../../context/Code";
 import CodeLine from "./CodeLine";
 
 
 const CodeView = () => {
-    const {texts, getReservedTextsForCoding} = useContext(CodeContext)
+    const [allSelected, setAllSelected] = useState(false)
+    const {texts, getReservedTextsForCoding, setSelectedTexts} = useContext(CodeContext)
+    useEffect(() => {
+        let newSelected = []
+        if(allSelected) {
+            const checkboxes = document.getElementsByName('codecheck')
+            checkboxes.forEach((box) => {
+                if(box.checked !== true) {
+                    box.checked = true
+                    newSelected = [...newSelected, box.id]
+                }
+            })
+            setSelectedTexts(newSelected)
+        }
+        else {
+            setSelectedTexts([])
+            const checkboxes = document.getElementsByName('codecheck')
+            checkboxes.forEach((box) => {
+                if(box.checked === true) {
+                    box.checked = false
+                }
+            })
+        }
+    }, [allSelected, setSelectedTexts])
+    useEffect(() => {
+        if(texts.length === 0) setAllSelected(false)
+    }, [texts])
     return (
         <div>
             {texts && texts.length > 0 &&
@@ -24,7 +50,10 @@ const CodeView = () => {
                         </div>
                         <div className={'flex-1 codeline-header'}/>
                         <div className={'flex-1 codeline-header'}/>
-                        <div className={'flex-1 codeline-header'}/>
+                        <div className={'flex-1 codeline-header'}><input className={'codeline-check'} type={'checkbox'} onChange={(event) => {
+                            setAllSelected(event.target.checked)
+                        }
+                        }/></div>
                     </div>
                     {texts.map(text => <CodeLine key={text.id} text={text}/>)}
                 </div>

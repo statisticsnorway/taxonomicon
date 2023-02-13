@@ -10,13 +10,31 @@ const filterOptions = createFilterOptions({
 
 const CodeLine = ({ text}) => {
     const {giveCode, addTextToSelected, removeTextFromSelected} = useContext(CodeContext)
+    const [autoCompleteValue, setAutoCompleteValue] = useState(null)
     const [selectedCode, setSelectedCode] = useState(null)
     const checkBoxCheck = (event) => {
         if(event.target.checked) {
-            addTextToSelected( {id: text.id} )
+            addTextToSelected( text.id)
         }
         else {
-            removeTextFromSelected( {id: text.id})
+            removeTextFromSelected( text.id)
+        }
+    }
+    const findTrimCode = (trim) => {
+        const predCode = coicopOptions.find((ob) => ob.trimCode === trim)
+        if(predCode) {
+            setSelectedCode(predCode.code)
+            setAutoCompleteValue(predCode)
+        }
+    }
+    const onAutocompleteChange = (change, val) => {
+        if (val) {
+            setSelectedCode(val.code)
+            setAutoCompleteValue(val)
+        }
+        else {
+            setSelectedCode(null)
+            setAutoCompleteValue(null)
         }
     }
     return (
@@ -33,34 +51,39 @@ const CodeLine = ({ text}) => {
                 {text.predictions.map(prediction => {
                     const prob = Number(prediction.probability)
                     if(prob > 0.84)
-                        return (<div className={'codeline-prediction'}>
-                            <button key={prediction.code} className={"width-75 prediction-high"}>
+                        return (<div key={prediction.code} className={'codeline-prediction'}>
+                            <button  className={"width-75 prediction-high"}
+                                    onClick={() => findTrimCode(prediction.code)}>
                                 {`${prediction.code} : ${prob.toFixed(2)}`}
                             </button>
                             </div>
                         )
                     else if (prob > 0.60)
-                        return (<div className={"codeline-prediction"}>
-                            <button key={prediction.code} className={"width-75 prediction-medium"}>
+                        return (<div key={prediction.code} className={"codeline-prediction"}>
+                            <button  className={"width-75 prediction-medium"}
+                                    onClick={() => findTrimCode(prediction.code)}>
                                 {`${prediction.code} : ${prob.toFixed(2)}`}
                             </button>
                         </div>)
                     else
-                        return (<div className={"codeline-prediction"}>
-                            <button key={prediction.code} className={"width-75 prediction-low"}>
+                        return (<div key={prediction.code} className={"codeline-prediction"}>
+                            <button  className={"width-75 prediction-low"}
+                                    onClick={() => findTrimCode(prediction.code)}>
                                 {`${prediction.code} : ${prob.toFixed(2)}`}
                             </button>
                         </div>)
                 })}
             </div>
             <div className={'codeline-categories-container'}>
-                <Autocomplete onChange={(change, val) => {setSelectedCode(val.code)}}
+                <Autocomplete onChange={onAutocompleteChange}
                           renderInput={(params) => <TextField {...params} label="Coicop" />}
                           options={coicopOptions}
                           filterOptions={filterOptions}
                           getOptionLabel={({code, description}) => {
                               return `${code} - ${description}`;
                           }}
+                          value={autoCompleteValue}
+
                 />
             </div>
             <div className={'codeline-assign-container'}>
@@ -80,6 +103,8 @@ const CodeLine = ({ text}) => {
                 <input onChange={checkBoxCheck}
                        type={'checkbox'}
                        className={'codeline-check'}
+                       name={'codecheck'}
+                       id={text.id}
                 />
             </div>
         </div>

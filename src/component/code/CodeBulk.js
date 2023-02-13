@@ -1,6 +1,6 @@
 import {Autocomplete, createFilterOptions, TextField} from "@mui/material";
 import {coicopOptions} from "../../data/coicop";
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {CodeContext} from "../../context/Code";
 
 const filterOptions = createFilterOptions({
@@ -9,6 +9,7 @@ const filterOptions = createFilterOptions({
 
 const CodeBulk = () => {
     const [code, setCode] = useState(null)
+
     const {giveCodeBulk, getReservedTextsForCoding} = useContext(CodeContext)
     return (
         <div className={'code-bulk-header'}>
