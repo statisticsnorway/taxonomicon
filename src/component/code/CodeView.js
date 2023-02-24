@@ -36,7 +36,7 @@ const CodeView = () => {
             {texts && texts.length > 0 &&
                 <div>
                     <div className={'codeline-header-container'}>
-                        <div className={'flex-2 codeline-header'}>
+                        <div className={'flex-3 codeline-header'}>
                             Tekst for koding
                         </div>
                         <div className={'flex-5 codeline-header'}>
@@ -45,15 +45,15 @@ const CodeView = () => {
                         <div className={'flex-2 codeline-header'}>
                             Prediksjoner
                         </div>
-                        <div className={'flex-2 codeline-header'}>
+                        <div className={'flex-4 codeline-header'}>
                             Velg kategori
                         </div>
                         <div className={'flex-1 codeline-header'}/>
                         <div className={'flex-1 codeline-header'}/>
-                        <div className={'flex-1 codeline-header'}><input className={'codeline-check'} type={'checkbox'} onChange={(event) => {
-                            setAllSelected(event.target.checked)
-                        }
-                        }/></div>
+                        <div className={'flex-1 codeline-header'}/>
+                        <div className={'flex-1 codeline-header'}>
+                            <input className={'codeline-check'} type={'checkbox'} onChange={(event) => {setAllSelected(event.target.checked)}}/>
+                        </div>
                     </div>
                     {texts.map(text => <CodeLine key={text.id} text={text}/>)}
                 </div>

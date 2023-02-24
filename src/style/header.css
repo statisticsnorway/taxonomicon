@@ -1,0 +1,24 @@
+.headertext {
+    color: #c5a9d5;
+    margin: 0;
+}
+
+.nav-link {
+    color: #b5a2be;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+.nav-link:hover {
+    color: #553f5d;
+    text-decoration: none;
+}
+
+.nav-link-active {
+    color: #9a5daf;
+    margin-left: 20px;
+}
+.nav-link-active:hover {
+    color: #553f5d;
+}
+

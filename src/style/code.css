@@ -9,31 +9,25 @@
     background-color: #f3f3f3;
 }
 .codeline-text-container {
-    flex: 2;
     align-self: center;
 }
 .codeline-context-container {
     display: flex;
-    flex: 5;
     align-items: center;
 }
 .codeline-predictions-container {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    flex: 2;
 }
 .codeline-categories-container {
     align-self: center;
-    flex: 2;
 }
 .codeline-assign-container {
     align-self: center;
-    flex: 1;
 }
 .codeline-check-container {
     align-self: stretch;
-    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -44,7 +38,8 @@
     border: none;
 }
 .codeline-prediction {
-    flex: 1;
+    text-align: center;
+
 }
 .codeline-check {
     transform: scale(2.5);
@@ -57,8 +52,20 @@
     padding: 20px 0;
     font-size: 1.25em;
 }
+.flex-7 {
+    flex: 7;
+}
+.flex-6 {
+    flex: 6;
+}
 .flex-5 {
     flex: 5;
+}
+.flex-4 {
+    flex: 4;
+}
+.flex-3 {
+    flex: 3;
 }
 .flex-2 {
     flex: 2;
@@ -77,18 +84,29 @@ button.width-75 {
 button.prediction-low {
     background-color: #ff8686;
     border: 1px #e14444 solid;
+    line-height: 1.5rem;
 }
 button.prediction-medium {
     background-color: #ecec6a;
     border: 1px #afa44d solid;
+    line-height: 1.5rem;
 }
 button.prediction-high {
     background-color: #c4ffb1;
     border: 1px #78c553 solid;
+    line-height: 1.5rem;
 }
 button.assign-code {
-    background-color: #c1eaff;
+    background-color: #a2deff;
     border: 1px #56c2ff solid;
+    color: #00a5ff;
+}
+button.assign-code:disabled {
+    color: #c2ceda
+}
+button.inpute {
+    background-color: #e8e8e8;
+    border: 1px #c5c5c5 solid;
 }
 button.assign-code:disabled {
     background-color: #ddf1ff;
@@ -113,9 +131,11 @@ button.fetch {
     padding-bottom: 20px;
 }
 .code-bulk-actions-container {
+    align-items: center;
     display: flex;
 }
 .code-bulk-actions-filler {
+
     flex: 10;
     margin: 10px;
 }
@@ -128,10 +148,13 @@ button.fetch {
     align-items: center;
 }
 .code-bulk-categories {
-    flex: 10;
+    flex: 6;
     margin: 10px;
 }
 .code-bulk-assign {
-    flex: 1;
+    flex: 2;
     margin: 10px;
+    display: flex;
+    justify-content: space-around;
 }
+
