@@ -4,8 +4,10 @@ import CodeLine from "./CodeLine";
 
 
 const CodeView = () => {
+    const [filter, setFilter] = useState('')
     const [allSelected, setAllSelected] = useState(false)
     const {texts, getReservedTextsForCoding, setSelectedTexts} = useContext(CodeContext)
+    const filteredTexts = texts.filter(t => t.text.toLowerCase().includes(filter.toLowerCase()))
     useEffect(() => {
         let newSelected = []
         if(allSelected) {
@@ -38,6 +40,7 @@ const CodeView = () => {
                     <div className={'codeline-header-container'}>
                         <div className={'flex-3 codeline-header'}>
                             Tekst for koding
+                            <div><input type={'text'} onChange={(ev) => {setFilter(ev.target.value)}} /></div>
                         </div>
                         <div className={'flex-5 codeline-header'}>
                             Kontekst
@@ -55,7 +58,7 @@ const CodeView = () => {
                             <input className={'codeline-check'} type={'checkbox'} onChange={(event) => {setAllSelected(event.target.checked)}}/>
                         </div>
                     </div>
-                    {texts.map(text => <CodeLine key={text.id} text={text}/>)}
+                    {filteredTexts.map(text => <CodeLine key={text.id} text={text}/>)}
                 </div>
             }
             {texts && texts.length === 0 &&

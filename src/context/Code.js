@@ -58,7 +58,7 @@ const CodeProvider = ({children}) => {
     const [selectedTexts, setSelectedTexts] = useState([])
 
     const reserveTexts = () => {
-        return axios.post(`${ENCODING_URL}/reserve`, {size: 100})
+        return axios.post(`${ENCODING_URL}/reserve`, {size: 200})
     }
     const getTexts = () => axios.get(`${ENCODING_URL}/not-confirmed?limit=20`)
 

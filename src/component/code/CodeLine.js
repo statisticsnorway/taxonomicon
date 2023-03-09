@@ -23,12 +23,39 @@ const filterOptions = createFilterOptions({
     stringify: ({ searchterms }) => searchterms.join(' ')
 });
 
+const predictionComponent = (prediction, findTrimCode, selectedCodeList) => {
+    const prob = Number(prediction.probability)
+    if(prob > 0.84)
+        return (<div key={prediction.code} className={'codeline-prediction'}>
+                <button  className={"prediction-high"}
+                         onClick={() => findTrimCode(prediction.code)}>
+                    {buildCode(prediction.code)}
+                </button>
+            </div>
+        )
+    else if (prob > 0.60)
+        return (<div key={prediction.code} className={"codeline-prediction"}>
+            <Tooltip title={<span style={{ whiteSpace: 'pre-line' }}>{`Kategori: ${buildCode(prediction.code)} - ${getDescription(prediction.code, selectedCodeList)}\n Sannsynlighet: ${prob.toFixed(2)}`}</span>}><button  className={"prediction-medium"}
+                                                                                                                                                                                                                             onClick={() => findTrimCode(prediction.code)}>
+                {buildCode(prediction.code)}
+            </button></Tooltip>
+        </div>)
+    else
+        return (<div key={prediction.code} className={"codeline-prediction"}>
+            <Tooltip title={<span style={{ whiteSpace: 'pre-line' }}>{`Kategori: ${buildCode(prediction.code)} - ${getDescription(prediction.code, selectedCodeList)}\n Sannsynlighet: ${prob.toFixed(2)}`}</span>}><button  className={"prediction-low"}
+                                                                                                                                                                                                                             onClick={() => findTrimCode(prediction.code)}>
+                {buildCode(prediction.code)}
+            </button></Tooltip>
+        </div>)
+}
+
 const CodeLine = ({ text}) => {
     const {setBulkCode} = useContext(BulkCodeContext)
     const {giveCode, addTextToSelected, removeTextFromSelected} = useContext(CodeContext)
     const {selectedCodeList} = useContext(CodeListContext)
     const [autoCompleteValue, setAutoCompleteValue] = useState(null)
     const [selectedCode, setSelectedCode] = useState(null)
+    const [currentSearch, setCurrentSearch] = useState('')
     const checkBoxCheck = (event) => {
         if(event.target.checked) {
             addTextToSelected( text.id)
@@ -67,42 +94,33 @@ const CodeLine = ({ text}) => {
             </div>
 
             <div className={'flex-2 codeline-predictions-container'}>
-                {text.predictions.map(prediction => {
-                    const prob = Number(prediction.probability)
-                    if(prob > 0.84)
-                        return (<div key={prediction.code} className={'codeline-prediction'}>
-                            <button  className={"prediction-high"}
-                                    onClick={() => findTrimCode(prediction.code)}>
-                                {buildCode(prediction.code)}
-                            </button>
-                            </div>
-                        )
-                    else if (prob > 0.60)
-                        return (<div key={prediction.code} className={"codeline-prediction"}>
-                            <Tooltip title={<span style={{ whiteSpace: 'pre-line' }}>{`Kategori: ${buildCode(prediction.code)} - ${getDescription(prediction.code, selectedCodeList)}\n Sannsynlighet: ${prob.toFixed(2)}`}</span>}><button  className={"prediction-medium"}
-                                    onClick={() => findTrimCode(prediction.code)}>
-                                {buildCode(prediction.code)}
-                            </button></Tooltip>
-                        </div>)
-                    else
-                        return (<div key={prediction.code} className={"codeline-prediction"}>
-                            <Tooltip title={<span style={{ whiteSpace: 'pre-line' }}>{`Kategori: ${buildCode(prediction.code)} - ${getDescription(prediction.code, selectedCodeList)}\n Sannsynlighet: ${prob.toFixed(2)}`}</span>}><button  className={"prediction-low"}
-                                    onClick={() => findTrimCode(prediction.code)}>
-                                {buildCode(prediction.code)}
-                            </button></Tooltip>
-                        </div>)
-                })}
+                {text && text.predictions && text.predictions.length > 0 &&
+                    predictionComponent(text.predictions[0], findTrimCode, selectedCodeList)
+                }
             </div>
             <div className={'flex-4 codeline-categories-container'}>
                 <Autocomplete onChange={onAutocompleteChange}
                               renderInput={(params) => selectedCode ? <Tooltip title={autoCompleteValue.description}><TextField {...params} label="COICOP" /></Tooltip> : <TextField {...params} label="COICOP" />  }
                               options={selectedCodeList ? selectedCodeList : []}
                               filterOptions={filterOptions}
-                              getOptionLabel={({code, description}) => {
+                              getOptionLabel={({code, description, searchterms}) => {
                                   return `${code} - ${description}`;
+
+                              }}
+                              renderOption={(p, o, s) => {
+                                  const hitword = o.searchterms.find(t => {
+                                      if(t && currentSearch) return t.toLowerCase().includes(currentSearch.toLowerCase())
+                                      else return false
+                                  })
+                                  return (<li  {...p}><span style={{display : 'inline-block'}}>{`${o.code} - ${o.description}`}<span style={{color: '#44F'}}>{hitword ? ' ('+hitword+')' : ''}</span></span></li>)
                               }}
                               value={autoCompleteValue}
                               isOptionEqualToValue={(option, value) => option.id === value.id}
+                              onInputChange={(e, v, r) => {
+                                  if(r === 'input') {
+                                      setCurrentSearch(v)
+                                  }
+                              }}
 
                 />
             </div>
