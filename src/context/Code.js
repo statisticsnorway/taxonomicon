@@ -60,7 +60,7 @@ const CodeProvider = ({children}) => {
     const reserveTexts = () => {
         return axios.post(`${ENCODING_URL}/reserve`, {size: 200})
     }
-    const getTexts = () => axios.get(`${ENCODING_URL}/not-confirmed?limit=20`)
+    const getTexts = () => axios.get(`${ENCODING_URL}/not-confirmed?limit=200`)
 
     const getReservedTextsForCoding = async () => {
         const texts = await getTexts()
