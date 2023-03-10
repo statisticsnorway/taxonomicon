@@ -6,7 +6,7 @@ const Unauthorized = () =>
             Du har dessverre ikke tilgang :(
 
         </div>
-        <div><img height={400} width={400} src={'./assets/sadcat.jpeg'}/></div>
+        <div><img alt={'sad cat'} height={400} width={400} src={'./assets/sadcat.jpeg'}/></div>
     </div>
 
 export default Unauthorized

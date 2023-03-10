@@ -14,8 +14,10 @@ import Frontpage from "./component/Frontpage";
 import Layout from "./component/util/Layout";
 import AuthProvider from "./context/Auth";
 import ProtectedRoute from "./component/util/ProtectedRoute";
+import {useState} from "react";
 
 function App() {
+  const [filter, setFilter] = useState('')
   return (
       <AuthProvider>
         <Router>
@@ -36,8 +38,8 @@ function App() {
                                   <CodeListProvider>
                                       <CodeProvider>
                                           <BulkCodeProvider>
-                                              <CodeBulk/>
-                                              <CodeView/>
+                                              <CodeBulk setFilter={setFilter}/>
+                                              <CodeView setFilter={setFilter} filter={filter}/>
                                           </BulkCodeProvider>
                                       </CodeProvider>
                                   </CodeListProvider>

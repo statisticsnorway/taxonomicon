@@ -17,14 +17,24 @@
 }
 .codeline-predictions-container {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
 }
 .codeline-categories-container {
     align-self: center;
+    display: flex;
+}
+.codeline-categories {
+    flex: 1;
 }
 .codeline-assign-container {
     align-self: center;
+}
+.codeline-button-container {
+    align-self: center;
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
 }
 .codeline-check-container {
     align-self: stretch;
@@ -81,6 +91,9 @@ button {
 button.width-75 {
     width: 75%;
 }
+button.width-50 {
+    width: 50%;
+}
 button.prediction-low {
     background-color: #ff8686;
     border: 1px #e14444 solid;
@@ -100,6 +113,7 @@ button.assign-code {
     background-color: #a2deff;
     border: 1px #56c2ff solid;
     color: #00a5ff;
+    padding: 4px;
 }
 button.assign-code:disabled {
     color: #c2ceda
@@ -107,6 +121,7 @@ button.assign-code:disabled {
 button.inpute {
     background-color: #e8e8e8;
     border: 1px #c5c5c5 solid;
+    padding: 4px;
 }
 button.assign-code:disabled {
     background-color: #ddf1ff;
@@ -114,6 +129,7 @@ button.assign-code:disabled {
 button.no-code {
     background-color: #ffc1c1;
     border: 1px #ff7b7b solid;
+    padding: 4px;
 }
 button.fetch {
     background-color: #e8e8e8;

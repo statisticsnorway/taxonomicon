@@ -8,7 +8,7 @@ const filterOptions = createFilterOptions({
     stringify: ({ searchterms }) => searchterms.join(' ')
 });
 
-const CodeBulk = () => {
+const CodeBulk = ({setFilter}) => {
 
     const {bulkCode, setBulkCode} = useContext(BulkCodeContext)
     const {giveCodeBulk, getReservedTextsForCoding} = useContext(CodeContext)
@@ -19,8 +19,8 @@ const CodeBulk = () => {
             <div className={'code-bulk-bulk-container'}>
                 <div className={'code-bulk-categories'}>
                     <Autocomplete onChange={(event, val) => setBulkCode(val)}
-                                  renderInput={(params) => <TextField {...params} label="COICOP" />}
-                                  options={selectedCodeList ? selectedCodeList : []}
+                                  renderInput={(params) => <TextField {...params} label={selectedCodeList ? selectedCodeList.name : ''} />}
+                                  options={selectedCodeList ? selectedCodeList.codes : []}
                                   filterOptions={filterOptions}
                                   getOptionLabel={({code, description}) => {
                                       return `${code} - ${description}`;
@@ -41,7 +41,12 @@ const CodeBulk = () => {
                     />
                 </div>
                 <div className={'code-bulk-assign'}>
-                    <button onClick={() => {if(bulkCode) giveCodeBulk(bulkCode.code)}}
+                    <button onClick={() => {
+                        if(bulkCode) giveCodeBulk(bulkCode.code)
+                        const allBox = document.getElementById('bulkCheck')
+                        allBox.checked = false
+                        setFilter('')
+                    }}
                             disabled={bulkCode === null}
                             className={'assign-code'}
                             style={{width: '40%'}}>

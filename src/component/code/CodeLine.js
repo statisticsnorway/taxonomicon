@@ -5,6 +5,8 @@ import {BulkCodeContext, CodeContext, CodeListContext} from "../../context/Code"
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn';
+import ContentPasteIcon from '@mui/icons-material/ContentPaste';
+import EditIcon from '@mui/icons-material/Edit';
 
 const buildCode = (trimcode) => {
 
@@ -13,8 +15,8 @@ const buildCode = (trimcode) => {
     }
     return '0'+trimcode[0]+'.'+trimcode[1]+'.'+trimcode[2]+'.'+trimcode[3]
 }
-const getDescription = (trimcode, coicopOptions) => {
-    const desc = coicopOptions.find(option => option.trimCode === trimcode)
+const getDescription = (trimcode, options) => {
+    const desc = options.codes.find(option => option.trimCode === trimcode)
     if (desc) return desc.description
     return 'Ugyldig kode'
 }
@@ -49,8 +51,8 @@ const predictionComponent = (prediction, findTrimCode, selectedCodeList) => {
         </div>)
 }
 
-const CodeLine = ({ text}) => {
-    const {setBulkCode} = useContext(BulkCodeContext)
+const CodeLine = ({ text, setFilter}) => {
+    const {setBulkCode, bulkCode} = useContext(BulkCodeContext)
     const {giveCode, addTextToSelected, removeTextFromSelected} = useContext(CodeContext)
     const {selectedCodeList} = useContext(CodeListContext)
     const [autoCompleteValue, setAutoCompleteValue] = useState(null)
@@ -65,14 +67,15 @@ const CodeLine = ({ text}) => {
         }
     }
     const findTrimCode = (trim) => {
-        const predCode = selectedCodeList.find((ob) => ob.trimCode === trim)
+        const predCode = selectedCodeList.codes.find((ob) => ob.trimCode === trim)
         if(predCode) {
             setSelectedCode(predCode.code)
             setAutoCompleteValue(predCode)
             setBulkCode(predCode)
         }
     }
-    const onAutocompleteChange = (change, val) => {
+
+    const onAutocompleteChange = (val) => {
         if (val) {
             setSelectedCode(val.code)
             setAutoCompleteValue(val)
@@ -85,23 +88,23 @@ const CodeLine = ({ text}) => {
     }
     return (
         <div className={'codeline-container'}>
-            <div className={'flex-3 codeline-text-container'}>
+            <div onClick={() => setFilter(text.text)} className={'flex-3 codeline-text-container'}>
                 <span className={'codeline-text'}>{text.text}</span>
             </div>
 
-            <div className={'flex-5 codeline-context-container'}>
+            <div className={'flex-4 codeline-context-container'}>
                 <CodeLineContext textContext={text.context} />
             </div>
 
-            <div className={'flex-2 codeline-predictions-container'}>
+            <div className={'flex-1 codeline-predictions-container'}>
                 {text && text.predictions && text.predictions.length > 0 &&
                     predictionComponent(text.predictions[0], findTrimCode, selectedCodeList)
                 }
             </div>
             <div className={'flex-4 codeline-categories-container'}>
-                <Autocomplete onChange={onAutocompleteChange}
-                              renderInput={(params) => selectedCode ? <Tooltip title={autoCompleteValue.description}><TextField {...params} label="COICOP" /></Tooltip> : <TextField {...params} label="COICOP" />  }
-                              options={selectedCodeList ? selectedCodeList : []}
+                <Autocomplete onChange={(ev, val) => onAutocompleteChange(val)}
+                              renderInput={(params) => selectedCode ? <Tooltip title={autoCompleteValue.description}><TextField {...params} label={selectedCodeList ? selectedCodeList.name : ''} /></Tooltip> : <TextField {...params} label={selectedCodeList ? selectedCodeList.name : ''} />  }
+                              options={selectedCodeList ? selectedCodeList.codes : []}
                               filterOptions={filterOptions}
                               getOptionLabel={({code, description, searchterms}) => {
                                   return `${code} - ${description}`;
@@ -121,30 +124,35 @@ const CodeLine = ({ text}) => {
                                       setCurrentSearch(v)
                                   }
                               }}
+                              className={'codeline-categories'}
 
                 />
+                <button style={{border: 'none', backgroundColor : 'inherit', paddingLeft: '2px'}} disabled={!bulkCode} onClick={() => onAutocompleteChange(bulkCode)}><ContentPasteIcon/></button>
             </div>
-            <div className={'flex-1 codeline-assign-container'}>
+            <div className={'flex-3 codeline-button-container'}>
                 <button
-
-                        disabled={selectedCode === null}
-                        onClick={() => giveCode({id: text.id, confirmedCode: selectedCode})}
-                        className={'width-75 assign-code disableIcon'}>
+                    title={'Tilegn valgt kode'}
+                    disabled={selectedCode === null}
+                    onClick={() => giveCode({id: text.id, confirmedCode: selectedCode})}
+                    className={'width-50 assign-code disableIcon'}>
                     <CheckCircleOutlineIcon />
+
                 </button>
-            </div>
-            <div className={'flex-1 codeline-assign-container'}>
-                <button onClick={() => giveCode({id: text.id, confirmedCode: 'INPUTER'})}
-                        className={'width-75 inpute'}>
+                <button title={'Til editering'} onClick={() => giveCode({id: text.id, confirmedCode: 'EDIT'})}
+                        className={'width-50 inpute'}>
                     <ArrowForwardIcon/>
                 </button>
-            </div>
-            <div className={'flex-1 codeline-assign-container'}>
-                <button onClick={() => giveCode({id: text.id, confirmedCode: "DONT_CODE"})}
-                        className={'width-75 no-code'}>
+                <button title={'Til inputering'} onClick={() => giveCode({id: text.id, confirmedCode: 'INPUTER'})}
+                        className={'width-50 inpute'}>
+                    <EditIcon/>
+                </button>
+                <button title={'Skal ikke kodes'} onClick={() => giveCode({id: text.id, confirmedCode: "DONT_CODE"})}
+                        className={'width-50 no-code'}>
                     <DoDisturbOnIcon sx={{ color: 'red' }} />
                 </button>
             </div>
+
+
             <div  className={'flex-1 codeline-check-container'}>
                 <input onChange={checkBoxCheck}
                        type={'checkbox'}

@@ -8,9 +8,10 @@ export const BulkCodeContext = createContext(null)
 export const CodeListContext = createContext(null)
 
 export const CodeListProvider = ({children}) => {
-    const [codeListList, setCodeListList] = useState([])
+    const [, setCodeListList] = useState([])
     const [selectedCodeList, setSelectedCodeList] = useState(null)
     useEffect(() => {
+
         axios.get(`${CODELIST_URL}`).then(res => {
             setCodeListList(res.data)
             return res.data[0].id
@@ -31,13 +32,11 @@ export const CodeListProvider = ({children}) => {
                         searchterms: searchWords
                     }
                 })
-                setSelectedCodeList(t)
+                setSelectedCodeList({name: res.data.name, codes: t})
             })
         })
     }, [])
-    useEffect(() => {
-        console.log('CODE LIST', selectedCodeList)
-    }, [selectedCodeList])
+
     return (
         <CodeListContext.Provider value={{selectedCodeList}}>
             {children}
