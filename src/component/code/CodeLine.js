@@ -141,13 +141,13 @@ const CodeLine = ({ text, setFilter}) => {
                 </button>
                 </div>
                 <div>
-                <button title={'Til editering'} onClick={() => giveCode({id: text.id, confirmedCode: 'EDIT'})}
+                <button title={'Til inputering'} onClick={() => giveCode({id: text.id, confirmedCode: 'INPUTER'})}
                         className={'inpute'}>
                     <ArrowForwardIcon/>
                 </button>
                 </div>
                 <div>
-                <button title={'Til inputering'} onClick={() => giveCode({id: text.id, confirmedCode: 'INPUTER'})}
+                <button title={'Til editering'} onClick={() => giveCode({id: text.id, confirmedCode: 'EDIT'})}
                         className={'inpute'}>
                     <EditIcon/>
                 </button>
