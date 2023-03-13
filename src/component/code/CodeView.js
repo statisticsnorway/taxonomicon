@@ -50,10 +50,10 @@ const CodeView = ({filter, setFilter}) => {
                         <div className={'flex-1 codeline-header'}>
                             Prediksjon
                         </div>
-                        <div className={'flex-4 codeline-header'}>
+                        <div className={'flex-5 codeline-header'}>
                             Velg kategori
                         </div>
-                        <div className={'flex-3 codeline-header'}/>
+                        <div className={'flex-2 codeline-header'}/>
                         <div className={'flex-1 codeline-header'}>
                             <input id={'bulkCheck'} className={'codeline-check'} type={'checkbox'} onChange={(event) => {setAllSelected(event.target.checked)}}/>
                         </div>

@@ -101,7 +101,7 @@ const CodeLine = ({ text, setFilter}) => {
                     predictionComponent(text.predictions[0], findTrimCode, selectedCodeList)
                 }
             </div>
-            <div className={'flex-4 codeline-categories-container'}>
+            <div className={'flex-5 codeline-categories-container'}>
                 <Autocomplete onChange={(ev, val) => onAutocompleteChange(val)}
                               renderInput={(params) => selectedCode ? <Tooltip title={autoCompleteValue.description}><TextField {...params} label={selectedCodeList ? selectedCodeList.name : ''} /></Tooltip> : <TextField {...params} label={selectedCodeList ? selectedCodeList.name : ''} />  }
                               options={selectedCodeList ? selectedCodeList.codes : []}
@@ -129,27 +129,35 @@ const CodeLine = ({ text, setFilter}) => {
                 />
                 <button style={{border: 'none', backgroundColor : 'inherit', paddingLeft: '2px'}} disabled={!bulkCode} onClick={() => onAutocompleteChange(bulkCode)}><ContentPasteIcon/></button>
             </div>
-            <div className={'flex-3 codeline-button-container'}>
+            <div className={'flex-2 codeline-button-container'}>
+                <div>
                 <button
                     title={'Tilegn valgt kode'}
                     disabled={selectedCode === null}
                     onClick={() => giveCode({id: text.id, confirmedCode: selectedCode})}
-                    className={'width-50 assign-code disableIcon'}>
+                    className={'assign-code disableIcon'}>
                     <CheckCircleOutlineIcon />
 
                 </button>
+                </div>
+                <div>
                 <button title={'Til editering'} onClick={() => giveCode({id: text.id, confirmedCode: 'EDIT'})}
-                        className={'width-50 inpute'}>
+                        className={'inpute'}>
                     <ArrowForwardIcon/>
                 </button>
+                </div>
+                <div>
                 <button title={'Til inputering'} onClick={() => giveCode({id: text.id, confirmedCode: 'INPUTER'})}
-                        className={'width-50 inpute'}>
+                        className={'inpute'}>
                     <EditIcon/>
                 </button>
+                </div>
+                <div>
                 <button title={'Skal ikke kodes'} onClick={() => giveCode({id: text.id, confirmedCode: "DONT_CODE"})}
-                        className={'width-50 no-code'}>
+                        className={'no-code'}>
                     <DoDisturbOnIcon sx={{ color: 'red' }} />
                 </button>
+                </div>
             </div>
 
 
